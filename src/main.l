@@ -1,16 +1,30 @@
-
 %{
 #include <stdlib.h>
-void yyerror(char *);
-
 #include "y.tab.h"
-
+void yyerror(char *);
 %}
-
 
 %%
 
+[0-9]+ {
+    yylval = atoi(yytext);
+    return DIG;
+}
 
+[.] {
+    yylval = yytext;
+    return PTO;
+}
+
+\n {
+    return EOL;
+}
+
+[ \t]+ ;
+
+. {
+    yyerror("Token nao reconhecido!\n");
+}
 
 %%
 

@@ -4,16 +4,35 @@
 void yyerror(char *);
 %}
 
+DIG [0-9]
+POS [1-9]
+ALF [a-zA-Z]
+ALFANUM [a-zA-Z0-9]
+
 %%
 
-[0-9]+ {
-    yylval = atoi(yytext);
-    return DIG;
+-?0{DIG}+.*{DIG}* {
+    return INV;
 }
 
-[.] {
-    yylval = yytext;
-    return PTO;
+-?0 {
+    yylval.val_int = atoi(yytext);
+    return INT;
+}
+
+-?{POS}+{DIG}* {
+    yylval.val_int = atoi(yytext);
+    return INT;
+}
+
+-?{POS}+{DIG}*.{DIG}+ {
+    yylval.val_float = atof(yytext);
+    return FLT;
+}
+
+-?0.{DIG}+ {
+    yylval.val_float = atof(yytext);
+    return FLT;
 }
 
 \n {
@@ -23,7 +42,7 @@ void yyerror(char *);
 [ \t]+ ;
 
 . {
-    yyerror("Token nao reconhecido!\n");
+    return INV;
 }
 
 %%

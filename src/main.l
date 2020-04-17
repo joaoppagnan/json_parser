@@ -10,8 +10,6 @@ ALFANUM [a-zA-Z0-9]
 
 %%
 
-{DEC}+\; ;
-
 {DEC}+ {
     return DIG;
 }
@@ -65,3 +63,4 @@ ALFANUM [a-zA-Z0-9]
 int yywrap() {
   return 1;
 }
+/* {DEC}+\; ; */

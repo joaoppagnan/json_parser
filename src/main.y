@@ -17,18 +17,20 @@ STRUCT: OBJECT
 | ARRAY
 ;
 
-OBJECT: CHA_OP OBJ CHA_CL
+OBJECT: CHA_OP CHA_CL
+| CHA_OP OBJ CHA_CL
 ;
 
-OBJ: COMMA STRING DOPO VAL OBJ
-|
+OBJ: STRING DOPO VAL
+| STRING DOPO VAL COM OBJ
 ;
 
-ARRAY: COL_OP ARY COL_CL
+ARRAY: COL_OP COL_CL
+| COL_OP ARY COL_CL
 ;
 
-ARY: COMMA VAL ARY
-|
+ARY: VAL
+| VAL COM ARY
 ;
 
 VAL: STRING
@@ -52,15 +54,10 @@ NUM: DIG
 | DIG DOT NUM
 ;
 
-COMMA: COM
-|
-;
-
 %%
 
 void yyerror(char *s){
   printf("INVALIDO\n");
-  /* fprintf(stderr, "%s\n", s); */
 }
 
 int main(){

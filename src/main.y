@@ -5,36 +5,57 @@ void yyerror(char *c);
 int yylex(void);
 %}
 
-%union
-{
-  int val_int;
-  float val_float;
-};
-
-%token INT FLT INV EOL
-%type <val_int> INT
-%type <val_float> FLT
+%token NUM ASP MSG COL_OP COL_CL CHA_OP CHA_CL DOPO COM
 
 %%
 
-NUMBER: NUMBER NUM EOL
+INPUT: INPUT STRUCT {printf("VALIDO\n");}
 |
 ;
 
-NUM: INT {printf("esse numero %d eh valido\n", $<val_int>1);
-   $<val_int>$ = $<val_int>1;}
-| FLT {printf("esse numero %.6f eh valido\n", $<val_float>1);
-   $<val_float>$ = $<val_float>1;}
-| INV {printf("esse token eh invalido\n");}
+STRUCT: OBJECT
+| ARRAY
+;
+
+OBJECT: CHA_OP OBJ CHA_CL
+;
+
+OBJ: COMMA STRING DOPO VAL OBJ
+|
+;
+
+ARRAY: COL_OP ARY COL_CL
+;
+
+ARY: COMMA VAL ARY
+|
+;
+
+VAL: STRING
+| NUM
+| STRUCT
+;
+
+STRING: ASP STR ASP
+;
+
+STR: MSG STR
+| NUM STR
+|
+;
+
+COMMA: COM
+|
 ;
 
 %%
 
 void yyerror(char *s){
-    fprintf(stderr, "%s\n", s);
+  printf("INVALIDO\n");
+  /* fprintf(stderr, "%s\n", s); */
 }
 
 int main(){
-    yyparse();
-    return 0;
+  yyparse();
+  return 0;
 }

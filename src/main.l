@@ -5,45 +5,54 @@ void yyerror(char *);
 %}
 
 DIG [0-9]
-POS [1-9]
 ALF [a-zA-Z]
 ALFANUM [a-zA-Z0-9]
 
 %%
 
--?0{DIG}+.*{DIG}* {
-    return INV;
+-?{DIG}+.{DIG}+ {
+    return NUM;
 }
 
--?0 {
-    yylval.val_int = atoi(yytext);
-    return INT;
+-?{DIG}+ {
+    return NUM;
 }
 
--?{POS}+{DIG}* {
-    yylval.val_int = atoi(yytext);
-    return INT;
+{ALFANUM}+ {
+    return MSG;
 }
 
--?{POS}+{DIG}*.{DIG}+ {
-    yylval.val_float = atof(yytext);
-    return FLT;
+\[ {
+    return COL_OP;
 }
 
--?0.{DIG}+ {
-    yylval.val_float = atof(yytext);
-    return FLT;
+\] {
+    return COL_CL;
 }
 
-\n {
-    return EOL;
+\{ {
+    return CHA_OP;
 }
 
-[ \t]+ ;
-
-. {
-    return INV;
+\} {
+    return CHA_CL;
 }
+
+[:] {
+    return DOPO;
+}
+
+["] {
+    return ASP;
+}
+
+[,] {
+    return COM;
+}
+
+[\n]+ ;
+
+. ;
 
 %%
 

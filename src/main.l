@@ -4,18 +4,24 @@
 void yyerror(char *);
 %}
 
-DIG [0-9]
+DEC [0-9]
 ALF [a-zA-Z]
 ALFANUM [a-zA-Z0-9]
 
 %%
 
--?{DIG}+.{DIG}+ {
-    return NUM;
+{DEC}+\; ;
+
+{DEC}+ {
+    return DIG;
 }
 
--?{DIG}+ {
-    return NUM;
+[.] {
+    return DOT;
+}
+
+[-] {
+    return MIN;
 }
 
 {ALFANUM}+ {

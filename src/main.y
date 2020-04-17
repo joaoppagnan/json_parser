@@ -5,7 +5,7 @@ void yyerror(char *c);
 int yylex(void);
 %}
 
-%token NUM ASP MSG COL_OP COL_CL CHA_OP CHA_CL DOPO COM
+%token DIG MIN DOT ASP MSG COL_OP COL_CL CHA_OP CHA_CL DOPO COM
 
 %%
 
@@ -32,7 +32,7 @@ ARY: COMMA VAL ARY
 ;
 
 VAL: STRING
-| NUM
+| NUMBER
 | STRUCT
 ;
 
@@ -40,8 +40,16 @@ STRING: ASP STR ASP
 ;
 
 STR: MSG STR
-| NUM STR
+| NUMBER STR
 |
+;
+
+NUMBER: NUM
+| MIN NUM
+;
+
+NUM: DIG
+| DIG DOT NUM
 ;
 
 COMMA: COM

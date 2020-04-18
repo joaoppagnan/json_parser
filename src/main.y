@@ -48,10 +48,14 @@ STR: MSG STR
 
 NUMBER: NUM
 | MIN NUM
+| FRAC
+| MIN FRAC
 ;
 
 NUM: DIG
-| DIG DOT NUM
+;
+
+FRAC: NUM DOT NUM
 ;
 
 %%
